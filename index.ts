@@ -4,6 +4,8 @@ import getWatermarkSize from "./helpers/getWatermarkSize";
 import positions from "./helpers/positions";
 import getTextAlignment from "./helpers/getTextAlignment";
 import getAlpha from "./helpers/getAlpha";
+import isValidHex from "./helpers/isValidHex";
+import convertRGBAToHexA from "./helpers/convertRGBAToHexA";
 import type { Options } from "./helpers/types";
 
 /**
@@ -54,6 +56,7 @@ export const addImageWatermark = async (
  * @async
  * @param {string|Buffer} mainImage - The main image to which the watermark will be added.
  * @param {string} watermarkText - The watermark text to be added to the main image.
+ * @param {string} watermarkColor - The color of the watermark text.
  * @param {Options} options - An object containing optional values for the watermark position, size, opacity, etc.
  * @throws {Error} Invalid x-coordinate value.
  * @throws {Error} Invalid y-coordinate value.
@@ -63,13 +66,14 @@ export const addImageWatermark = async (
 export const addTextWatermark = async (
   mainImage: string | Buffer,
   watermarkText: string,
+  watermarkColor: string,
   options: Options = {}
 ): Promise<Sharp.Sharp> => {
   const { dpi, opacity, position, x, y } = getValidatedOptions(options);
 
   const mainImageBuffer = await Sharp(mainImage).toBuffer();
 
-  const textColor = `#000000${getAlpha(opacity)}`;
+  const textColor = isValidHex(watermarkColor) ? `${watermarkColor}${getAlpha(opacity)}` : `${convertRGBAToHexA(watermarkColor, true)}${getAlpha(opacity)}`;
 
   const watermarkObj = {
     text: {
