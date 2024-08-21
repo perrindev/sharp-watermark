@@ -11,7 +11,7 @@ import type { Options } from "./helpers/types";
 /**
  * Adds a watermark image to a main image.
  * @async
- * @param {string|Buffer} mainImage - The main image to which the watermark will be added.
+ * @param {Buffer} mainImage - The main image to which the watermark will be added.
  * @param {string|Buffer} watermarkImage - The watermark image to be added to the main image.
  * @param {Options} options - An object containing optional values for the watermark position, size, etc.
  * @throws {Error} Invalid ratio value.
@@ -21,7 +21,7 @@ import type { Options } from "./helpers/types";
  * @returns {Promise<Sharp.Sharp>} The main image object with the watermark applied.
  */
 export const addImageWatermark = async (
-  mainImage: string | Buffer,
+  mainImage: Buffer,
   watermarkImage: string | Buffer,
   options: Options = {}
 ): Promise<Sharp.Sharp> => {
